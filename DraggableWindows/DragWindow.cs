@@ -1,23 +1,35 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
+using System.IO;
+using SimpleJSON;
 
 public class DragWindow : MonoBehaviour, IDragHandler
 {
 
     public RectTransform dragRectTransform;
-    public GameObject canvas;
-    public CanvasScaler canvasScaler;
-    public float scaleFactor;
-
-    
+    public Canvas canvas;
 
     public void OnDrag(PointerEventData eventData)
     {
-        canvasScaler = canvas.GetComponent<CanvasScaler>();
-        scaleFactor = Screen.width / canvasScaler.referenceResolution.x; // It's not quite perfect but it's the best I could do
         dragRectTransform = gameObject.GetComponent<RectTransform>();
-        
-        dragRectTransform.anchoredPosition += eventData.delta / scaleFactor;
+        if (UseShift() == true)
+        {
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                dragRectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
+            }
+        }
+        if (UseShift() == false)
+        {
+            dragRectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
+        }
+    }
+
+    private bool UseShift()
+    {
+        string path = Application.persistentDataPath + "/DraggableWindowsSettings.json";
+        string settingsJsonFile = File.ReadAllText(path);
+        JSONObject settingsJson = (JSONObject)JSON.Parse(settingsJsonFile);
+        return settingsJson["ShiftEnabled"];
     }
 }
