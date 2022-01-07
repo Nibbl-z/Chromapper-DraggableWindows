@@ -4,6 +4,7 @@ This plugin allows you to drag around different windows in ChroMapper that may g
 - Node Editor
 - BPM Tapper
 - Strobe Generator
+
 You can also now switch between using Shift and Click to drag or just click to drag!
 
 ![Preview](https://github.com/Nibbl-z/Chromapper-DraggableWindows/blob/main/Preview.png?raw=true)
